@@ -23,10 +23,10 @@ use strict;
 use LWP::Simple;
 use JSON;
 
-my $xmlName = 'cityTripPlanner';        # Name show in Google maps
+my $xmlName = 'cityTripPlanner';                   # Name shown in Google maps
 my $xmlDesc = '';                                  # Optional description
 my $addressListTxt = 'addressList.txt';            # Input address list
-my $outputXml = '/home/mtak/public_html/test.kml'; # Output XML file
+my $outputXml = '/path/to/webroot/planner.kml';    # Output XML file
 my $acceptColons = 1;                   # use colons ":" as well as semicolons ";" as delimiter in the addressList?
 
 # You can define categories here (which you can use in the address list file), and associate an icon with them
