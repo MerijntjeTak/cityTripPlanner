@@ -1,0 +1,88 @@
+#    Copyright 2012 Merijntje Tak
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, version 3 of the License.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+#
+#    cityTripPlanner.pl - Convert a list of addresses to a bunch of Google Maps markers 
+#
+#    This script lets you create a KML marker list for use in Google
+#     maps based on a list of addresses. The script converts the
+#     addresses to coordinates by using the Google Maps Geocoder API, and
+#     then creates an XML file with the coordinates for viewing on Google
+#     Maps.
+#
+#    You can put PoI's (Points of Interest) in categories and attach
+#    different color markers to those categories, for easy viewing. The
+#    Google Maps WUI also combines the categories for easy viewing.
+#
+#    Usage:
+#     1. Configure the variables in the script (xmlName, xmlDesc,
+#       addressList, outputXml)
+#
+#     2. Modify the addressList.txt file
+#       The file is a 'semicolon'-seperated file, the fields are:
+#        Name of PoI;Address of PoI;Category of PoI
+#
+#     3. Run the script
+#
+#     4. Put the output XML on a web-accessible location, and enter the
+#     URI in the search field in Google Maps (yeah, that actually
+#     works!). Please note that the XML location has to be accessible
+#     from the web, as the Google server will fetch the XML (instead of
+#     the usual Javasript behaviour of letting the browser do the work).
+#
+#     Obviously you can also use the XML together with your Google Maps
+#     API 'iframe', or other KML enabled applications.
+#     
+#     Dependencies:
+#      - Perl module LWP::Simple
+#      - Perl module JSON
+#
+#     Note on categories:
+#     The categories are just a string, which is used in both the
+#      addressList and the scripts configuration variables. It is
+#      necessary that those strings exactly match! 
+#      In the scripts configuration you can see that the actual marker
+#      icon used by Google maps is just an image. The standard images are
+#      provided by the Google toolkit, but you can just was well replace
+#      them with your own.
+#
+#     Note on updating the map:
+#     If you update the KML file, it could be that you see no change.
+#      That is because Google caches the fetch of the KML file at your
+#      webserver for a few minutes. A possible workaround is to rename
+#      the XML, create symlinks or use the Google Maps API create a map
+#      yourself (based on JavaScript, where the markers will be generated
+#      by your browser).
+#
+#     Another thing to keep in mind is that if you put the XML URI in
+#      the Google Maps search box, Google will actually render the map
+#      images with the markers built in! This means that your browser
+#      will cache the map images including the markers (so it seems the
+#      map isn't updating). If you experience this problem you can clear
+#      your browser cache (Firefox: Tools->Clear recent
+#      history->Details->Cache), or use the Google Maps API to render
+#      your own map (as described above).
+#
+#    An example Google Maps API JavaScript page is on the roadmap.
+#
+#    FAQ
+#    - My markers don't show up!
+#     Please check the following things:
+#     - Did you run the script after changing the addressList file? (it happens)
+#     - Did you let the Google server cache expire?
+#     - Did you clear your browser cache?
+#     - Did you use colons in the addressList even though the allowColons
+#      variable is set to 0?
+#

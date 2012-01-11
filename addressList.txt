@@ -1,0 +1,28 @@
+# Example address list file
+# The address doesn't have to be an actual 'address'. It could be anything
+#  that Google Maps recognizes as a single place on earth. If multiple 
+#  addresses are found using your string, the first one will be picked as
+#  the location for the marker
+#
+#  Format:
+#   Name ; Address ; Category
+#   (colons can be used next to semicolons)
+#
+Crysler Building;405 Lexington Avenue, New York;Architecture
+Empire State Building;350 5th Avenue, New York;Architecture
+Radio City Music Hall;1260 Avenue of the Americas, New York;Architecture
+Brooklyn Bridge;Brooklyn Bridge, New York;Architecture
+Federal Hall National Memorial;54 Pearl Street, New York;Architecture
+Flatiron building;175 5th Avenue, New York;Architecture
+
+Top of the Rock;30 Rockefeller Plaza, New York;Sightseeing
+NYSE;11 Wall Street, New York;Sightseeing
+Central Park;Central Park, New York;Sightseeing
+Statue of Liberty;Statue of Liberty, Liberty Island, New York;Sightseeing
+
+Katz's Delicatessen;205 E Houston Street, New York;Food
+Magnolia Bakery;401 Bleecker Street, New York;Food
+
+Barney's;660 Madison Avenue, New York;Shopping
+Bergdorf Goodman;754 5th Avenue, New York;Shopping
+
