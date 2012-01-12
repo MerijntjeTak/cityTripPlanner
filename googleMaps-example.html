@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>cityTripPlanner Example map</title>
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+
+    <!-- Enter your Google API key below, you can request one at http://code.google.com/apis/console/ -->
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=APIKEY&sensor=false">
+    </script>
+
+    <script type="text/javascript">
+      // Avoid the Google maps cache by adding a random string to the request URI
+      var avoidCache = "?nc=" + (Math.random());
+
+      // Enter the URI of your KML file here
+      var kmlFile = "http://example.com/output.kml" + avoidCache;
+
+      function initialize() {
+        var myOptions = {
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+     
+        var kmlOverlay = new google.maps.KmlLayer(kmlFile);
+        kmlOverlay.setMap(map);
+      }
+
+    </script>
+  </head>
+  <body onload="initialize()">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>
