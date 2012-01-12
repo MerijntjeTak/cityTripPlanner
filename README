@@ -28,11 +28,11 @@
 #
 #    Usage:
 #     1. Configure the variables in the script (xmlName, xmlDesc,
-#       addressList, outputXml)
+#     addressList, outputXml)
 #
 #     2. Modify the addressList.txt file
-#       The file is a 'semicolon'-seperated file, the fields are:
-#        Name of PoI;Address of PoI;Category of PoI
+#     The file is a 'semicolon'-seperated file, the fields are:
+#      Name of PoI;Address of PoI;Category of PoI
 #
 #     3. Run the script
 #
@@ -40,14 +40,20 @@
 #     URI in the search field in Google Maps (yeah, that actually
 #     works!). Please note that the XML location has to be accessible
 #     from the web, as the Google server will fetch the XML (instead of
-#     the usual Javasript behaviour of letting the browser do the work).
+#     the usual JavaScript behaviour of letting the browser do the work).
 #
 #     Obviously you can also use the XML together with your Google Maps
-#     API 'iframe', or other KML enabled applications.
+#     API map viewer, or other KML enabled applications. An example page
+#     included (googleMaps-example.html). You just need to add your Google
+#     API key and your KML URI.
+#
+#     The KML file also works with OpenStreetMap. You can use the API or
+#     try the following URI: http://maps.burningsilicon.net/
 #     
 #     Dependencies:
 #      - Perl module LWP::Simple
 #      - Perl module JSON
+#      - Perl module HTML::Entities
 #
 #     Note on categories:
 #     The categories are just a string, which is used in both the
@@ -74,8 +80,6 @@
 #      your browser cache (Firefox: Tools->Clear recent
 #      history->Details->Cache), or use the Google Maps API to render
 #      your own map (as described above).
-#
-#    An example Google Maps API JavaScript page is on the roadmap.
 #
 #    FAQ
 #    - My markers don't show up!

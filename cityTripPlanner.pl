@@ -21,12 +21,13 @@
 
 use strict;
 use LWP::Simple;
+use HTML::Entities;
 use JSON;
 
 my $xmlName = 'cityTripPlanner';                   # Name shown in Google maps
 my $xmlDesc = '';                                  # Optional description
 my $addressListTxt = 'addressList.txt';            # Input address list
-my $outputXml = '/path/to/webroot/planner.kml';    # Output XML file
+my $outputXml = '/path/to/webroot/output.kml';     # Output XML file
 my $acceptColons = 1;                   # use colons ":" as well as semicolons ";" as delimiter in the addressList?
 
 # You can define categories here (which you can use in the address list file), and associate an icon with them
@@ -118,6 +119,9 @@ sub fetchGeocodingJSON {
   $$poi_ref{'apiAdr'} = $$poi_ref{'adr'};
   $$poi_ref{'apiAdr'} =~ s/ /\+/g;
 
+  # First wait for 0.25s, otherwise we hit Google's query limit
+  select(undef, undef, undef, 0.25);
+
   my $url = 'http://maps.googleapis.com/maps/api/geocode/json?address='.$$poi_ref{'apiAdr'}.'&sensor=false';
   if ( my $content = get($url) ) {
 
@@ -203,15 +207,15 @@ sub outputXml {
   printLine '<?xml version="1.0" encoding="UTF-8"?>';
   printLine '<kml xmlns="http://www.opengis.net/kml/2.2">';
   printLine '<Document>';
-  printLine ' <name>' . $xmlName . '</name>';
-  printLine ' <description>' . $xmlDesc . '</description>';
+  printLine ' <name>' . encode_entities($xmlName) . '</name>';
+  printLine ' <description>' . encode_entities($xmlDesc) . '</description>';
 
   # Create the styles for the different color icons
   foreach my $style ( keys(%categoryIcons) ) {
-    printLine '  <Style id="' . $style . '">';
+    printLine '  <Style id="' . encode_entities($style) . '">';
     printLine '   <IconStyle>';
     printLine '    <Icon>';
-    printLine '     <href>' . $categoryIcons{$style} . '</href>';
+    printLine '     <href>' . encode_entities($categoryIcons{$style}) . '</href>';
     printLine '    </Icon>';
     printLine '   </IconStyle>';
     printLine '  </Style>';
@@ -220,7 +224,7 @@ sub outputXml {
   foreach my $category (@$poiCat_ref) {
 
     printLine '  <Folder>';
-    printLine '   <name>' . $category . '</name>';
+    printLine '   <name>' . encode_entities($category) . '</name>';
     printLine '   <description></description>';
 
     foreach my $poiName ( keys(%$data_ref) ) {
@@ -232,9 +236,9 @@ sub outputXml {
       }
 
       printLine '  <Placemark>';
-      printLine '   <name>' . $poiName . '</name>';
-      printLine '   <description>' . $$poi_ref{'address'} . '</description>';
-      printLine '   <styleUrl>#' . $$poi_ref{'cat'} . '</styleUrl>';
+      printLine '   <name>' . encode_entities($poiName) . '</name>';
+      printLine '   <description>' . encode_entities($$poi_ref{'address'}) . '</description>';
+      printLine '   <styleUrl>#' . encode_entities($$poi_ref{'cat'}) . '</styleUrl>';
       printLine '   <Point>';
       printLine '    <coordinates>' . $$poi_ref{'lng'} . ',' . $$poi_ref{'lat'} . ',0</coordinates>';
       printLine '   </Point>';
