@@ -53,7 +53,6 @@ sub main {
   my $data_ref = \%data;
   
   readConfig($data_ref, $addressListTxt);
-  createCategoryList($data_ref, $poiCat_ref);
   
   foreach my $poiName ( keys(%$data_ref) ) {
   
@@ -64,6 +63,11 @@ sub main {
     getGeocodingResult($poi_ref);
   
   }
+
+  createCategoryList($data_ref, $poiCat_ref);
+
+  # Devvers/advanced users only: use an external script to input raw data into the XML, see function description:
+  # useExtScript($data_ref, '/usr/bin/perl getSubwayEntrances.pl', 'Subway'); 
   
   outputXml($data_ref, $poiCat_ref);
 
@@ -179,7 +183,7 @@ sub getGeocodingResult {
 
   $$poi_ref{'lat'} = $jsonResults[0]{'geometry'}{'location'}{'lat'};
   $$poi_ref{'lng'} = $jsonResults[0]{'geometry'}{'location'}{'lng'};
-  $$poi_ref{'address'} = $jsonResults[0]{'formatted_address'};
+  $$poi_ref{'desc'} = $jsonResults[0]{'formatted_address'};
   
 }
 
@@ -237,7 +241,7 @@ sub outputXml {
 
       printLine '  <Placemark>';
       printLine '   <name>' . encode_entities($poiName) . '</name>';
-      printLine '   <description>' . encode_entities($$poi_ref{'address'}) . '</description>';
+      printLine '   <description>' . encode_entities($$poi_ref{'desc'}) . '</description>';
       printLine '   <styleUrl>#' . encode_entities($$poi_ref{'cat'}) . '</styleUrl>';
       printLine '   <Point>';
       printLine '    <coordinates>' . $$poi_ref{'lng'} . ',' . $$poi_ref{'lat'} . ',0</coordinates>';
@@ -279,6 +283,39 @@ sub createCategoryList {
   foreach my $category ( keys(%tmpdata) ) {
     push(@$poiCat_ref, $category);
   }
+
+}
+
+#
+# useExtScript - Run an external script and use it's output in the XML
+# 
+# Input:
+#  - External script that returns data to STDOUT with the following semicolon delimited format:
+#    latitude;longitude;name;description
+#   NOTE: If the script is a perl script, prepend the script name with /usr/bin/perl !
+#  - A category for the data
+#
+sub useExtScript {
+  my $data_ref = shift;
+  my $script = shift;
+  my $category = shift;
+
+  open(SCRIPT, "$script |") or die "Error: cannot run $script\n";
+
+  while (<SCRIPT>) {
+    my $line = $_;
+    chomp($line);
+
+    my @fields = split(/;/, $line);
+
+    $$data_ref{$fields[2]}{'lat'} = $fields[0];
+    $$data_ref{$fields[2]}{'lng'} = $fields[1];
+    $$data_ref{$fields[2]}{'desc'} = $fields[3];
+    $$data_ref{$fields[2]}{'cat'} = $category;
+
+  }
+
+  close(SCRIPT);
 
 }
 
