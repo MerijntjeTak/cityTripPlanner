@@ -6,7 +6,8 @@
 #
 #  Format:
 #   Name ; Address ; Category
-#   (colons can be used next to semicolons)
+#   (colons can be used instead of semicolons if the acceptColons option 
+#    in the script is set to true)
 #
 Crysler Building;405 Lexington Avenue, New York;Architecture
 Empire State Building;350 5th Avenue, New York;Architecture

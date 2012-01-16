@@ -295,6 +295,9 @@ sub createCategoryList {
 #   NOTE: If the script is a perl script, prepend the script name with /usr/bin/perl !
 #  - A category for the data
 #
+# Multiple useExtScript function can be used. An example script is provided in the
+#  getSubwayEntrances-example.pl script.
+#
 sub useExtScript {
   my $data_ref = shift;
   my $script = shift;
